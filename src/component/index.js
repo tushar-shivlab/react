@@ -1,2 +1,10 @@
 export { default as HeaderComponent } from './header';
 export { default as MenuComponent } from './menu';
+export { default as IconComponent } from './icon';
+export { default as PublicRoutes } from './routes';
+export { default as SliderComponent } from './slider';
+export { default as CardComponent } from './card';
+export { default as TextInputComponent } from './formcontrol/textinput';
+export { default as LabelComponent } from './formcontrol/label';
+export { default as SectionComponent } from './section';
+export { default as ButtonComponent } from './formcontrol/button';

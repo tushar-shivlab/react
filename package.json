@@ -2,12 +2,12 @@
   "name": "react-app",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT",
+  "license": "MIT license",
   "scripts": {
     "start": "webpack --mode development",
     "dev": "webpack-dev-server --mode development --open",
     "build": "webpack --mode production",
-    "dev1": "webpack serve --mode development"
+    "dev1": "webpack serve --mode development --port 3000"
   },
   "devDependencies": {
     "@babel/core": "^7.13.10",
@@ -24,12 +24,18 @@
     "webpack-dev-server": "^3.11.2"
   },
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.13.10",
+    "@babel/runtime": "^7.13.10",
+    "axios": "^0.21.1",
     "bootstrap": "^4.6.0",
     "file-loader": "^6.2.0",
+    "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.2",
+    "react-bootstrap-icons": "^1.4.0",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
+    "react-toastify": "^7.0.3",
     "styled-components": "^5.2.1"
   }
 }
