@@ -1,7 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import ApiInstance from '../config/config.json';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useHistory } from 'react-router-dom';
+import Cookies from 'js-cookie';
+import { UserContext } from '../context/context';
+
 import {
     LabelComponent,
     TextInputComponent,
@@ -23,12 +27,14 @@ const Column = styled(Col)`
 `;
 
 const LoginComponent = () => {
+    const [username, setUserName] = useState(UserContext);
     var [email, setEmail] = useState();
     var [password, setPassword] = useState();
     var [errorObj, setErrorObj] = useState({
         emailerror: '',
         passworderror: '',
     });
+    const history = useHistory();
     function handleInputChange(event) {
         event.stopPropagation();
         let field = event.target.name;
@@ -44,10 +50,22 @@ const LoginComponent = () => {
     async function handleSubmit(event) {
         event.preventDefault();
         try {
-            const login = await post(ApiInstance.loginurl, { email, password });
-            if (login.status === 200) toast.success('Login Successfully !');
+            const login = await post(ApiInstance.loginurl, {
+                email,
+                password,
+            });
 
-            localStorage.setItem({ user_token: login.data.data });
+            if (login.status === 200) {
+                const { token, role } = login.data.data;
+                setUserName(role);
+                Cookies.set('token', token, {
+                    sameSite: 'strict',
+                    expires: 1,
+                });
+                Cookies.set('role', role, { sameSite: 'strict', expires: 1 });
+                toast.success('Login Successfully !');
+                history.push('/');
+            }
         } catch (e) {
             toast.error('Login Failed ');
         }

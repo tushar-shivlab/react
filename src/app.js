@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './assets/css/app.scss';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { PublicRoutes, HeaderComponent } from './component/index';
-import { HomeComponent } from './page/index';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { PublicRoutes } from './component/index';
+import { UserProvider } from './context/context';
+import Cookies from 'js-cookie';
+
 const App = () => {
+    const role = Cookies.get('role');
+
     return (
-        <>
+        <UserProvider>
             <PublicRoutes />
-        </>
+        </UserProvider>
     );
 };
 
