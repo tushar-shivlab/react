@@ -57,7 +57,11 @@ const LoginComponent = () => {
                 const { token, role } = login.data.data;
                 setAuthState({ role, token });
                 toast.success('Login Successfully');
-                history.push('/');
+                if (role === 'SUPER_USER') {
+                    history.push('admin/dashboard');
+                } else {
+                    history.push('/');
+                }
             }
         } catch (e) {
             history.push('/login');
