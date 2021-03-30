@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Nav, Navbar } from 'react-bootstrap';
 import logo from '../assets/images/logo.jpg';
-import { MenuComponent, ButtonComponent, AdminMenuComponent } from './index';
+import { MenuComponent, ButtonComponent } from './index';
 import { AuthContext } from '../context/context';
 import { useHistory } from 'react-router-dom';
 const HeaderComponent = () => {
