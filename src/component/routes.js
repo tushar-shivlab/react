@@ -2,9 +2,9 @@ import React from 'react';
 import { AboutComponent, LoginComponent, HomeComponent } from '../page/index';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { HeaderComponent } from './index';
-const PublicRoutes = () => {
+const PublicRoutes = ({ history }) => {
     return (
-        <Router>
+        <Router history={history}>
             <HeaderComponent />
             <Switch>
                 <Route path="/" exact component={HomeComponent} />

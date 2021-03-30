@@ -1,20 +1,19 @@
 import React, { useContext } from 'react';
-import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { Nav, Navbar } from 'react-bootstrap';
 import logo from '../assets/images/logo.jpg';
-import { MenuComponent } from './index';
-import { UserContext, UserDispatchContext } from '../context/context';
+import { MenuComponent, ButtonComponent } from './index';
+import { AuthContext } from '../context/context';
+import { useHistory } from 'react-router-dom';
 
 // const name = '';
 const HeaderComponent = () => {
-    const userDetails = React.useContext(UserContext);
-    const setUserDetails = useContext(UserDispatchContext);
+    const history = useHistory();
+    const { authState, logout } = useContext(AuthContext);
 
-    console.log('userDetails.username :>> ', userDetails.username);
     return (
         <div className="header">
             <Navbar expand="lg">
                 <Navbar.Brand href="#home">
-                    {/* <AuthStateItem title="Token" value={role} /> */}
                     <img src={logo} alt="Logo" width={80} />
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -23,30 +22,26 @@ const HeaderComponent = () => {
                         <MenuComponent />
                     </Nav>
                 </Navbar.Collapse>
-                <Navbar.Brand>
-                    <NavDropdown title="Dropdown" id="collasible-nav-dropdown">
-                        {userDetails.username != undefined &&
-                        userDetails.username ? (
-                            <NavDropdown.Item href="#" disabled>
-                                {userDetails.username}
-                            </NavDropdown.Item>
-                        ) : (
-                            <NavDropdown.Item href="/login">
-                                User
-                            </NavDropdown.Item>
-                        )}
-                        <NavDropdown.Item href="#action/3.2">
-                            Another action
-                        </NavDropdown.Item>
-                        <NavDropdown.Item href="#action/3.3">
-                            Something
-                        </NavDropdown.Item>
-                        <NavDropdown.Divider />
-                        <NavDropdown.Item href="#action/3.4">
-                            Separated link
-                        </NavDropdown.Item>
-                    </NavDropdown>
-                </Navbar.Brand>
+
+                {authState.role ? (
+                    <ButtonComponent
+                        title="logout"
+                        onClick={logout}
+                        type="button"
+                        name="logout"
+                        className="btn btn-success"
+                        id="logout"
+                    />
+                ) : (
+                    <ButtonComponent
+                        title="Login"
+                        onClick={() => history.push('/login')}
+                        type="button"
+                        name="login"
+                        className="btn btn-success"
+                        id="login"
+                    />
+                )}
             </Navbar>
         </div>
     );
