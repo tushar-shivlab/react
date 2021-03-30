@@ -7,6 +7,7 @@ const ButtonComponent = (props) => {
             type={props.type}
             name={props.name}
             className={props.classname}
+            onClick={props.onClick}
             id={props.id}
             disabled={props.disabled}>
             {props.title}
