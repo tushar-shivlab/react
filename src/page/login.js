@@ -1,10 +1,8 @@
 import React, { useState, useContext } from 'react';
 import ApiInstance from '../config/config.json';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { useHistory } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import { UserContext } from '../context/context';
+import { AuthContext } from '../context/context';
 
 import {
     LabelComponent,
@@ -27,7 +25,7 @@ const Column = styled(Col)`
 `;
 
 const LoginComponent = () => {
-    const [username, setUserName] = useState(UserContext);
+    const { setAuthState } = useContext(AuthContext);
     var [email, setEmail] = useState();
     var [password, setPassword] = useState();
     var [errorObj, setErrorObj] = useState({
@@ -57,16 +55,16 @@ const LoginComponent = () => {
 
             if (login.status === 200) {
                 const { token, role } = login.data.data;
-                setUserName(role);
-                Cookies.set('token', token, {
-                    sameSite: 'strict',
-                    expires: 1,
-                });
-                Cookies.set('role', role, { sameSite: 'strict', expires: 1 });
-                toast.success('Login Successfully !');
-                history.push('/');
+                setAuthState({ role, token });
+                toast.success('Login Successfully');
+                if (role === 'SUPER_USER') {
+                    history.push('admin/dashboard');
+                } else {
+                    history.push('/');
+                }
             }
         } catch (e) {
+            history.push('/login');
             toast.error('Login Failed ');
         }
     }

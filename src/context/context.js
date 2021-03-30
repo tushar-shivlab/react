@@ -1,21 +1,57 @@
 import React, { createContext, useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
 import Cookies from 'js-cookie';
-const UserContext = createContext(undefined);
-const UserDispatchContext = createContext(undefined);
+const AuthContext = createContext();
+const { Provider } = AuthContext;
 
-function UserProvider({ children }) {
+const AuthProvider = ({ children, ...props }) => {
     const role = Cookies.get('role');
-    const [userDetails, setUserDetails] = useState({
-        username: role ? role : '',
+    const token = Cookies.get('token');
+
+    const [authState, setAuthState] = useState({
+        role,
+        token,
     });
 
-    return (
-        <UserContext.Provider value={userDetails}>
-            <UserDispatchContext.Provider value={setUserDetails}>
-                {children}
-            </UserDispatchContext.Provider>
-        </UserContext.Provider>
-    );
-}
+    const setAuthInfo = ({ role, token }) => {
+        Cookies.set('role', role);
+        Cookies.set('token', token);
 
-export { UserProvider, UserContext, UserDispatchContext };
+        setAuthState({
+            role,
+            token,
+        });
+    };
+
+    const logout = () => {
+        Cookies.remove('role');
+        Cookies.remove('token');
+        setAuthState({});
+        toast.success('Logout Successfully');
+        props.history.push('/login');
+    };
+
+    const isAuthenticated = () => {
+        if (!authState.token) {
+            return false;
+        }
+        if (!authState.role) {
+            return false;
+        }
+    };
+
+    return (
+        <Provider
+            value={{
+                authState,
+                setAuthState: (authInfo) => setAuthInfo(authInfo),
+                logout,
+                isAuthenticated,
+            }}>
+            {children}
+            <ToastContainer />
+        </Provider>
+    );
+};
+
+export { AuthContext, AuthProvider };
